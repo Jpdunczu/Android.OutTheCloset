@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">OutTheCloset</string>
+    <string name="clothes_name_label">Title</string>
+    <string name="clothing_title_hint">Enter a name for this item.</string>
+    <string name="clothing_size_label">Size:</string>
+    <string name="clothing_size_hint">What size is the size of this item?</string>
+    <string name="clothing_cost_label">Cost:</string>
+    <string name="clothing_cost_hint">How much did this item cost?</string>
+
+    <string name="clothing_color_label">Color:</string>
+    <string name="clothing_color_hint">What is the color of the item?</string>
+    <string name="brand_name_label">Brand:</string>
+    <string name="brand_name_hint">What is the items Brand?</string>
+    <string name="notes_label">Notes:</string>
+    <string name="add_notes_hint">Add notes or a description of the item.</string>
+</resources>
