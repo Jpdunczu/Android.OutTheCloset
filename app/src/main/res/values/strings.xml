@@ -13,4 +13,7 @@
     <string name="brand_name_hint">What is the items Brand?</string>
     <string name="notes_label">Notes:</string>
     <string name="add_notes_hint">Add notes or a description of the item.</string>
+    <string name="clothes_title">Clothes Name</string>
+    <string name="date_added">Date Added</string>
+    <string name="clothes_price">Clothes Price</string>
 </resources>

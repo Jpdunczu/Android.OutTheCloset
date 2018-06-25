@@ -1,4 +1,15 @@
+package aksar.inji.outthecloset;
+
+import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import aksar.inji.outthecloset.Clothes;
+
 public class ClothesLab {
+
 	private static ClothesLab sClothesLab;
 
 	private List<Clothes> mClothes;
@@ -18,9 +29,9 @@ public class ClothesLab {
 		return mClothes;
 	}
 
-	public Cothes getClothe(UUID id) {
+	public Clothes getClothe(UUID id) {
 		for (Clothes clothes : mClothes) {
-			if (clothes.getId().equals(id)) {
+			if (clothes.getmId().equals(id)) {
 				return clothes;
 			}
 		}
