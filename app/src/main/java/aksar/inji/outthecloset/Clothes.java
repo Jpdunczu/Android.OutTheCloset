@@ -28,10 +28,6 @@ public class Clothes {
         return mId;
     }
 
-    public void setmId(UUID mId) {
-        this.mId = mId;
-    }
-
     public String getmName() {
         return mName;
     }

@@ -7,12 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import aksar.inji.outthecloset.R;
 
 public class ClothesListFragment extends Fragment {
+
+
 
 	private RecyclerView mClothesRecyclerView;
 
@@ -32,11 +36,41 @@ public class ClothesListFragment extends Fragment {
 
 	// Implementing a View Holder and an Adapter
 
-    private class ClothesHolder extends RecyclerView.ViewHolder {
+    private class ClothesHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener {
+
+        private TextView mTitleTextView;
+        private TextView mDateTextView;
+        private TextView mCostTextView;
+
+        /****************************/
+        // for BindClothes
+        private Clothes mClothes;
+
         public ClothesHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_clothes, parent, false));
+            itemView.setOnClickListener(this);
+
+            mTitleTextView = (TextView) itemView.findViewById(R.id.clothes_name);
+            mDateTextView = (TextView) itemView.findViewById(R.id.date_added);
+            mCostTextView = (TextView) itemView.findViewById(R.id.clothes_price);
+        }
+
+        public void bind(Clothes clothing) {
+            mClothes = clothing;
+            mTitleTextView.setText(mClothes.getmName());
+            mDateTextView.setText(mClothes.getmDate().toString());
+            mCostTextView.setText(mClothes.getmCost());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(),
+                    mClothes.getmName() + " clicked!", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
+
 
     // Adapter
 
@@ -57,7 +91,8 @@ public class ClothesListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ClothesHolder holder, int position) {
-
+            Clothes clothing = mClothes.get(position);
+            holder.bind(clothing);
         }
 
         @Override
