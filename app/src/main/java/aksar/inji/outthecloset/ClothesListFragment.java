@@ -1,5 +1,6 @@
 package aksar.inji.outthecloset;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,9 +17,8 @@ import aksar.inji.outthecloset.R;
 
 public class ClothesListFragment extends Fragment {
 
-
-
 	private RecyclerView mClothesRecyclerView;
+	private ClothesAdapter mAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,9 +65,10 @@ public class ClothesListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(),
-                    mClothes.getmName() + " clicked!", Toast.LENGTH_SHORT)
-                    .show();
+            //Intent intent = new Intent(getActivity(), ClothesActivity.class);
+            //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId(), mClothes.getmBrandId());
+            Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId());
+            startActivity(intent);
         }
     }
 
@@ -98,6 +99,24 @@ public class ClothesListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mClothes.size();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    private void updateUI() {
+        ClothesLab clothesLab = ClothesLab.get(getActivity());
+        List<Clothes> clothes = clothesLab.getClothes();
+
+        if(mAdapter == null) {
+            mAdapter = new ClothesAdapter(clothes);
+            mClothesRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
         }
     }
 }
