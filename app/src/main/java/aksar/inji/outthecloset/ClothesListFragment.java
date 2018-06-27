@@ -67,7 +67,8 @@ public class ClothesListFragment extends Fragment {
         public void onClick(View v) {
             //Intent intent = new Intent(getActivity(), ClothesActivity.class);
             //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId(), mClothes.getmBrandId());
-            Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId());
+            //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId());
+            Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId());
             startActivity(intent);
         }
     }
