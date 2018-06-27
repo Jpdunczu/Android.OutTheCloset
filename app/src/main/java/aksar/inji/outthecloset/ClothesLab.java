@@ -1,6 +1,9 @@
 package aksar.inji.outthecloset;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,19 @@ public class ClothesLab {
 	}
 
 	private ClothesLab(Context context) {
+
 		mClothes = new ArrayList<>();
+
+		for( int i = 0; i <100; i++ ) {
+			Clothes clothes = new Clothes();
+			clothes.setmBrand("Brand #" + i);
+			clothes.setmColor("blue");
+			clothes.setmCost("3.99");
+			clothes.setmName("Clothing");
+			clothes.setmNotes("Love this one.");
+			clothes.setmSize("XS");
+			mClothes.add(clothes);
+		}
 	}
 
 	public List<Clothes> getClothes() {

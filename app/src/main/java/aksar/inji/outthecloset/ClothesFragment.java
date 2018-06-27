@@ -10,11 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 /**
  * Created by Josh on 6/13/2018.
  */
 
 public class ClothesFragment extends Fragment {
+
+    private static final String ARG_CLOTHES_ID = "clothes_id";
+
     private Clothes mClothes;
 
     private EditText mClothingTitle;
@@ -24,10 +29,20 @@ public class ClothesFragment extends Fragment {
     private EditText mClothingBrand;
     private EditText mClothingNotes;
 
+    public static ClothesFragment newInstance(UUID clothesId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CLOTHES_ID, clothesId);
+
+        ClothesFragment fragment = new ClothesFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mClothes = new Clothes();
+        UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
+        mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
     }
 
     @Nullable

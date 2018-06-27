@@ -1,5 +1,11 @@
 package aksar.inji.outthecloset;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,8 +16,9 @@ import java.util.UUID;
 public class Clothes {
 
     private UUID mId;
+    private UUID mBrandId;
     private String mName;
-    private Date mDate;
+    private String mDate;
     private String mCost;
     private String mSize;
     private String mColor;
@@ -21,12 +28,18 @@ public class Clothes {
 
     public Clothes() {
         mId = UUID.randomUUID();
-        mDate = new Date();
+        mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
     }
 
     public UUID getmId() {
         return mId;
     }
+
+    public void setmBrandId (UUID brandId) {
+        mBrandId = brandId;
+    }
+
+    public UUID getmBrandId () { return mBrandId; }
 
     public String getmName() {
         return mName;
@@ -36,12 +49,8 @@ public class Clothes {
         this.mName = mName;
     }
 
-    public Date getmDate() {
+    public String getmDate() {
         return mDate;
-    }
-
-    public void setmDate(Date mDate) {
-        this.mDate = mDate;
     }
 
     public String getmCost() {
@@ -91,4 +100,5 @@ public class Clothes {
     public void setmDIY(Boolean mDIY) {
         this.mDIY = mDIY;
     }
+
 }
