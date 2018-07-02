@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ClothesActivity">
+        <activity android:name=".ClothesPagerActivity"
+            android:parentActivityName=".ClothesListActivity">
 
         </activity>
     </application>

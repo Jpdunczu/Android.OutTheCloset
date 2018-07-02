@@ -16,4 +16,8 @@
     <string name="clothes_title">Clothes Name</string>
     <string name="date_added">Date Added</string>
     <string name="clothes_price">Clothes Price</string>
+    <string name="confirm_delete_title">Are you sure you want to delete this item?</string>
+    <string name="new_clothes">Add New Clothes</string>
+    <string name="save_new_clothes_button">Save</string>
+    <string name="find_diy_button">Find DIY fixes for this item</string>
 </resources>

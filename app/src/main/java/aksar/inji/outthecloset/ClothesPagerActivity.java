@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClothesPagerActivity extends AppCompatActivity {
+
     private static final String EXTRA_CLOTHES_ID =
             "com.aksar.inji.outthecloset.clothes_id";
 
@@ -37,6 +38,7 @@ public class ClothesPagerActivity extends AppCompatActivity {
 
         mClothes = ClothesLab.get(this).getClothes();
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
@@ -49,5 +51,12 @@ public class ClothesPagerActivity extends AppCompatActivity {
                 return mClothes.size();
             }
         });
+
+        for (int i = 0; i < mClothes.size(); i++) {
+            if (mClothes.get(i).getmId().equals(clothesId)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
+        }
     }
 }

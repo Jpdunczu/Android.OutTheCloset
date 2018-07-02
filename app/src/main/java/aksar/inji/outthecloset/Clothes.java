@@ -22,13 +22,20 @@ public class Clothes {
     private String mCost;
     private String mSize;
     private String mColor;
-    private String mBrand;
     private String mNotes;
     private Boolean mDIY;
 
     public Clothes() {
         mId = UUID.randomUUID();
         mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
+    }
+
+    public Clothes(UUID id) {
+        mId = id;
+    }
+
+    public void setmDate(String date) {
+        this.mDate = date;
     }
 
     public UUID getmId() {
@@ -77,14 +84,6 @@ public class Clothes {
         this.mColor = mColor;
     }
 
-    public String getmBrand() {
-        return mBrand;
-    }
-
-    public void setmBrand(String mBrand) {
-        this.mBrand = mBrand;
-    }
-
     public String getmNotes() {
         return mNotes;
     }
@@ -97,8 +96,12 @@ public class Clothes {
         return mDIY;
     }
 
-    public void setmDIY(Boolean mDIY) {
-        this.mDIY = mDIY;
+    public void setmDIY(String bool) {
+        if ( bool.equals("true") ) {
+            this.mDIY = true;
+        } else if ( bool.equals("false") ) {
+            this.mDIY = false;
+        }
     }
 
 }
