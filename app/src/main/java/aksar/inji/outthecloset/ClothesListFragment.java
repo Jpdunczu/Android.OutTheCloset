@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,8 +25,6 @@ import java.util.UUID;
 
 public class ClothesListFragment extends Fragment {
 
-    private static final String EXTRA_CLOTHES =
-            "com.aksar.inji.outthecloset.extra_clothes";
     private static final String DIALOG_DELEETE = "DeleteDialog";
     private static final int SAVE_SUCCESS = 1;
     private static final int CONFIRM_DELETE = 0;
@@ -34,6 +33,8 @@ public class ClothesListFragment extends Fragment {
 	private ClothesAdapter mAdapter;
 
 	private UUID checkedClothes;
+
+
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class ClothesListFragment extends Fragment {
             mDateTextView = (TextView) itemView.findViewById(R.id.date_added);
             mCostTextView = (TextView) itemView.findViewById(R.id.clothes_price);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.select_item);
+
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -101,23 +103,19 @@ public class ClothesListFragment extends Fragment {
                 mCheckBox.setVisibility(View.GONE);
                 return;
             }
-            //Intent intent = new Intent(getActivity(), ClothesActivity.class);
-            //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId(), mClothes.getmBrandId());
-            //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId());
             Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId());
             startActivity(intent);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            mCheckBox.setVisibility(View.VISIBLE);
-            return true;
+                mCheckBox.setVisibility(View.VISIBLE);
+                return true;
         }
     }
 
 
     // Adapter
-
     private class ClothesAdapter extends RecyclerView.Adapter<ClothesHolder> {
 
         private List<Clothes> mClothes;
@@ -159,11 +157,11 @@ public class ClothesListFragment extends Fragment {
         ClothesLab clothesLab = ClothesLab.get(getActivity());
         List<Clothes> clothes = clothesLab.getClothes();
 
-
         if(mAdapter == null) {
             mAdapter = new ClothesAdapter(clothes);
             mClothesRecyclerView.setAdapter(mAdapter);
         } else {
+
             mAdapter.setmClothes(clothes);
             mAdapter.notifyDataSetChanged();
         }
@@ -183,10 +181,10 @@ public class ClothesListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_clothes:
-                Clothes clothes = new Clothes();
-                ClothesLab.get(getActivity()).addClothes(clothes);
-                Intent intent = ClothesPagerActivity.newIntent(getActivity(), clothes.getmId());
-                //Intent intent = ClothesPagerActivity.newClothesIntent(getActivity());
+                //Clothes clothes = new Clothes();
+                //ClothesLab.get(getActivity()).addClothes(clothes);
+                //Intent intent = ClothesPagerActivity.newIntent(getActivity(), clothes.getmId());
+                Intent intent = ClothesPagerActivity.newClothesIntent(getActivity());
                 startActivity(intent);
                 return true;
             case R.id.delete_old_clothes:
@@ -215,6 +213,7 @@ public class ClothesListFragment extends Fragment {
 
         if (requestCode == CONFIRM_DELETE) {
             ClothesLab.get(getActivity()).deleteClothes(checkedClothes);
+            //mCheckBox.setVisibility(View.GONE);
             updateUI();
         }
     }

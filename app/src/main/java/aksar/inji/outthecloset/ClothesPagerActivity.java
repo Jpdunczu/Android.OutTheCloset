@@ -17,8 +17,13 @@ public class ClothesPagerActivity extends AppCompatActivity {
     private static final String EXTRA_CLOTHES_ID =
             "com.aksar.inji.outthecloset.clothes_id";
 
+    private static final String NEW_CLOTHES =
+            "com.aksar.inji.outthecloset.clothes_pos";
+
     private ViewPager mViewPager;
     private List<Clothes> mClothes;
+
+    private static boolean isNew = false;
 
     public static Intent newIntent(Context packageContext, UUID clothesId) {
         Intent intent = new Intent(packageContext, ClothesPagerActivity.class);
@@ -26,24 +31,43 @@ public class ClothesPagerActivity extends AppCompatActivity {
         return intent;
     }
 
+    public static Intent newClothesIntent(Context context) {
+        Intent intent = new Intent(context, ClothesPagerActivity.class);
+        isNew = true;
+        intent.putExtra(NEW_CLOTHES, isNew);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes_pager);
-
-        UUID clothesId = (UUID) getIntent()
-            .getSerializableExtra(EXTRA_CLOTHES_ID);
-
         mViewPager = (ViewPager) findViewById(R.id.clothes_view_pager);
 
-        mClothes = ClothesLab.get(this).getClothes();
+        if (!isNew) {
+            UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
+            mClothes = ClothesLab.get(this).getClothes();
+            for (int i = 0; i < mClothes.size(); i++) {
+                if (mClothes.get(i).getmId().equals(clothesId)) {
+                    mViewPager.setCurrentItem(i);
+                    break;
+                }
+            }
+        }
+
+
+
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                Clothes clothes = mClothes.get(position);
-                return ClothesFragment.newInstance(clothes.getmId());
+                if (!isNew) {
+                    Clothes clothes = mClothes.get(position);
+                    return ClothesFragment.newInstance(clothes.getmId());
+                } else {
+                    return ClothesFragment.newClothesInstance();
+                }
             }
 
             @Override
@@ -52,11 +76,6 @@ public class ClothesPagerActivity extends AppCompatActivity {
             }
         });
 
-        for (int i = 0; i < mClothes.size(); i++) {
-            if (mClothes.get(i).getmId().equals(clothesId)) {
-                mViewPager.setCurrentItem(i);
-                break;
-            }
-        }
+
     }
 }

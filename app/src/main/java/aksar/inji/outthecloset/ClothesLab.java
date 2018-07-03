@@ -42,7 +42,6 @@ public class ClothesLab {
 
 	}
 
-
 	public void addClothes(Clothes clothes){
 		//mClothes.add(clothes);
         ContentValues values = getContentValues(clothes);

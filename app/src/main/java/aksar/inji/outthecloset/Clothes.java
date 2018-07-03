@@ -25,6 +25,7 @@ public class Clothes {
     private String mNotes;
     private Boolean mDIY;
     private String brandName;
+    private int position;
 
     public Clothes() {
         mId = UUID.randomUUID();
@@ -44,6 +45,14 @@ public class Clothes {
 
     public void setmDate(String date) {
         this.mDate = date;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     public UUID getmId() {
