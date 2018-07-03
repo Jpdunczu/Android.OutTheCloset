@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class ClothesFragment extends Fragment {
 
     private static final String ARG_CLOTHES_ID = "clothes_id";
+    private static final String EXTRA_CLOTHES =
+            "com.aksar.inji.outthecloset.extra_clothes";
 
     private Clothes mClothes;
 
@@ -32,10 +35,12 @@ public class ClothesFragment extends Fragment {
     private EditText mClothingSize;
     private EditText mClothingCost;
     private EditText mClothingColor;
-    private EditText mClothingBrand;
+    //private EditText mClothingBrand;
     private EditText mClothingNotes;
 
     private Button mSaveButton;
+    private Button mCancelButton;
+    private Button mDIYButton;
 
     public static ClothesFragment newInstance(UUID clothesId) {
         Bundle args = new Bundle();
@@ -51,14 +56,13 @@ public class ClothesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
         mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
-        ClothesLab.get(getActivity())
-                .updateClothes(mClothes);
+        ClothesLab.get(getActivity()).updateClothes(mClothes);
     }
 
     @Nullable
@@ -72,6 +76,11 @@ public class ClothesFragment extends Fragment {
         mClothingColor = (EditText) v.findViewById(R.id.clothing_color);
         mClothingNotes = (EditText) v.findViewById(R.id.clothing_notes);
         mSaveButton = (Button) v.findViewById(R.id.save_button);
+        mCancelButton = (Button) v.findViewById(R.id.cancel_button);
+        mDIYButton = (Button) v.findViewById(R.id.diy_button);
+        if (mClothes.getmDIY()) {
+            mDIYButton.setVisibility(View.VISIBLE);
+        }
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,10 +90,36 @@ public class ClothesFragment extends Fragment {
                 mClothes.setmCost(mClothingCost.getText().toString());
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
+                mClothes.setmBrandId(UUID.randomUUID());
+                //ClothesLab.get(getActivity()).addClothes(mClothes);
+                getActivity().finish();
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        mDIYButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getDIYReport());
+                startActivity(intent);
             }
         });
 
         return v;
     }
 
+    private String getDIYReport() {
+        String brandName = mClothes.getBrandName();
+        String clothesName = mClothes.getmName();
+
+        return brandName + " " + clothesName + " DIY fixes and modifications";
+    }
 }

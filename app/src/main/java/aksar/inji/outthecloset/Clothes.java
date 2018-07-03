@@ -24,10 +24,18 @@ public class Clothes {
     private String mColor;
     private String mNotes;
     private Boolean mDIY;
+    private String brandName;
 
     public Clothes() {
         mId = UUID.randomUUID();
         mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
+        mBrandId = UUID.randomUUID();
+        mName = "";
+        mCost = "";
+        mSize = "";
+        mColor = "";
+        mNotes = "";
+        mDIY = false;
     }
 
     public Clothes(UUID id) {
@@ -104,4 +112,7 @@ public class Clothes {
         }
     }
 
+    public String getBrandName() {
+        return brandName;
+    }
 }

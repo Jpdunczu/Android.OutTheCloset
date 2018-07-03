@@ -42,6 +42,7 @@ public class ClothesLab {
 
 	}
 
+
 	public void addClothes(Clothes clothes){
 		//mClothes.add(clothes);
         ContentValues values = getContentValues(clothes);
@@ -50,13 +51,10 @@ public class ClothesLab {
 	}
 
 	public void deleteClothes(UUID clothesId) {
-	    /*
-		for (Clothes clothes : mClothes) {
-			if (clothes.getmId().equals(clothesId)) {
-				mClothes.remove(clothes);
-			}
-		}
-		*/
+		mDatabase.delete(ClothesTable.NAME,
+				ClothesTable.Cols.UUID + " = ?",
+					new String[] { clothesId.toString() }
+				);
 	}
 
 	public List<Clothes> getClothes() {

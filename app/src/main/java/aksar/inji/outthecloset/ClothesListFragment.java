@@ -1,5 +1,6 @@
 package aksar.inji.outthecloset;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,13 +16,19 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 public class ClothesListFragment extends Fragment {
 
+    private static final String EXTRA_CLOTHES =
+            "com.aksar.inji.outthecloset.extra_clothes";
     private static final String DIALOG_DELEETE = "DeleteDialog";
+    private static final int SAVE_SUCCESS = 1;
+    private static final int CONFIRM_DELETE = 0;
 
 	private RecyclerView mClothesRecyclerView;
 	private ClothesAdapter mAdapter;
@@ -88,6 +95,12 @@ public class ClothesListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            Toast.makeText(getActivity(),
+                    "Hold to delete...", Toast.LENGTH_SHORT).show();
+            if (mCheckBox.getVisibility() == View.VISIBLE) {
+                mCheckBox.setVisibility(View.GONE);
+                return;
+            }
             //Intent intent = new Intent(getActivity(), ClothesActivity.class);
             //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId(), mClothes.getmBrandId());
             //Intent intent = ClothesActivity.newIntent(getActivity(), mClothes.getmId());
@@ -98,7 +111,6 @@ public class ClothesListFragment extends Fragment {
         @Override
         public boolean onLongClick(View v) {
             mCheckBox.setVisibility(View.VISIBLE);
-
             return true;
         }
     }
@@ -143,11 +155,10 @@ public class ClothesListFragment extends Fragment {
         updateUI();
     }
 
-
-
     private void updateUI() {
         ClothesLab clothesLab = ClothesLab.get(getActivity());
         List<Clothes> clothes = clothesLab.getClothes();
+
 
         if(mAdapter == null) {
             mAdapter = new ClothesAdapter(clothes);
@@ -174,8 +185,8 @@ public class ClothesListFragment extends Fragment {
             case R.id.new_clothes:
                 Clothes clothes = new Clothes();
                 ClothesLab.get(getActivity()).addClothes(clothes);
-                Intent intent = ClothesPagerActivity
-                        .newIntent(getActivity(), clothes.getmId());
+                Intent intent = ClothesPagerActivity.newIntent(getActivity(), clothes.getmId());
+                //Intent intent = ClothesPagerActivity.newClothesIntent(getActivity());
                 startActivity(intent);
                 return true;
             case R.id.delete_old_clothes:
@@ -184,12 +195,27 @@ public class ClothesListFragment extends Fragment {
                 } else {
                     FragmentManager fragmentManager = getFragmentManager();
                     ConfirmDeleteFragment confirm = new ConfirmDeleteFragment();
+                    confirm.setTargetFragment(ClothesListFragment.this, CONFIRM_DELETE);
                     confirm.show(fragmentManager, DIALOG_DELEETE);
-                    //ClothesLab.get(getActivity()).deleteClothes(checkedClothes);
-                    //updateUI();
                 }
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+    *
+    * Getting the result back from the DialogFragment for the Delete button.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == CONFIRM_DELETE) {
+            ClothesLab.get(getActivity()).deleteClothes(checkedClothes);
+            updateUI();
         }
     }
 }

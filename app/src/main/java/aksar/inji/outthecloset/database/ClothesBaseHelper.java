@@ -17,16 +17,18 @@ public class ClothesBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + ClothesTable.NAME + "(" +
-        " _id integer primary key autoincrement, " +
-        ClothesTable.Cols.brandId + ", " +
-        ClothesTable.Cols.UUID + ", " +
-        ClothesTable.Cols.NAME + ", " +
-        ClothesTable.Cols.COST + ", " +
-        ClothesTable.Cols.COLOR + ", " +
-        ClothesTable.Cols.SIZE + ", " +
-        ClothesTable.Cols.DATE + ", " +
-        ClothesTable.Cols.NOTES + ", " +
-        ClothesTable.Cols.DIY);
+            " _id integer primary key autoincrement, " +
+            ClothesTable.Cols.brandId + ", " +
+            ClothesTable.Cols.UUID + ", " +
+            ClothesTable.Cols.NAME + ", " +
+            ClothesTable.Cols.COST + ", " +
+            ClothesTable.Cols.COLOR + ", " +
+            ClothesTable.Cols.SIZE + ", " +
+            ClothesTable.Cols.DATE + ", " +
+            ClothesTable.Cols.NOTES + ", " +
+            ClothesTable.Cols.DIY +
+            ")"
+        );
     }
 
     @Override
