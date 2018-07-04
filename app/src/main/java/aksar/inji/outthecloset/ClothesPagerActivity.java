@@ -17,8 +17,6 @@ public class ClothesPagerActivity extends AppCompatActivity {
     private static final String EXTRA_CLOTHES_ID =
             "com.aksar.inji.outthecloset.clothes_id";
 
-    private static final String NEW_CLOTHES =
-            "com.aksar.inji.outthecloset.clothes_pos";
 
     private ViewPager mViewPager;
     private List<Clothes> mClothes;
@@ -32,10 +30,8 @@ public class ClothesPagerActivity extends AppCompatActivity {
     }
 
     public static Intent newClothesIntent(Context context) {
-        Intent intent = new Intent(context, ClothesPagerActivity.class);
         isNew = true;
-        intent.putExtra(NEW_CLOTHES, isNew);
-        return intent;
+        return new Intent(context, ClothesPagerActivity.class);
     }
 
     @Override
@@ -44,7 +40,7 @@ public class ClothesPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_clothes_pager);
         mViewPager = (ViewPager) findViewById(R.id.clothes_view_pager);
 
-        if (!isNew) {
+
             UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
             mClothes = ClothesLab.get(this).getClothes();
             for (int i = 0; i < mClothes.size(); i++) {
@@ -53,7 +49,7 @@ public class ClothesPagerActivity extends AppCompatActivity {
                     break;
                 }
             }
-        }
+
 
 
 
@@ -62,17 +58,18 @@ public class ClothesPagerActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                if (!isNew) {
-                    Clothes clothes = mClothes.get(position);
+                Clothes clothes = mClothes.get(position);
+                if (!isNew)
                     return ClothesFragment.newInstance(clothes.getmId());
-                } else {
-                    return ClothesFragment.newClothesInstance();
-                }
+                else
+                    return newClothesFragment.newClothesInstance();
             }
 
             @Override
             public int getCount() {
-                return mClothes.size();
+
+                    return mClothes.size();
+
             }
         });
 

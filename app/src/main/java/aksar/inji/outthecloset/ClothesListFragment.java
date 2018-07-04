@@ -34,8 +34,6 @@ public class ClothesListFragment extends Fragment {
 
 	private UUID checkedClothes;
 
-
-
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -161,7 +159,6 @@ public class ClothesListFragment extends Fragment {
             mAdapter = new ClothesAdapter(clothes);
             mClothesRecyclerView.setAdapter(mAdapter);
         } else {
-
             mAdapter.setmClothes(clothes);
             mAdapter.notifyDataSetChanged();
         }
@@ -181,10 +178,7 @@ public class ClothesListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_clothes:
-                //Clothes clothes = new Clothes();
-                //ClothesLab.get(getActivity()).addClothes(clothes);
-                //Intent intent = ClothesPagerActivity.newIntent(getActivity(), clothes.getmId());
-                Intent intent = ClothesPagerActivity.newClothesIntent(getActivity());
+                Intent intent = new Intent(getActivity(), ClothesActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.delete_old_clothes:

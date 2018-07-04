@@ -24,6 +24,9 @@
         <activity android:name=".ClothesPagerActivity">
 
         </activity>
+        <activity android:name=".ClothesActivity">
+
+        </activity>
     </application>
 
 </manifest>

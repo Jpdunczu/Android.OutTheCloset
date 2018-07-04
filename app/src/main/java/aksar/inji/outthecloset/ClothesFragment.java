@@ -27,8 +27,6 @@ public class ClothesFragment extends Fragment {
 
     private static final String ARG_CLOTHES_ID = "clothes_id";
 
-    private static final String ARG_NEW_CLOTHES = "new_clothes";
-
     private Clothes mClothes;
 
     private EditText mClothingTitle;
@@ -41,7 +39,6 @@ public class ClothesFragment extends Fragment {
     private Button mCancelButton;
     private Button mDIYButton;
 
-    private boolean isNew = false;
 
     public static ClothesFragment newInstance(UUID clothesId) {
         Bundle args = new Bundle();
@@ -52,31 +49,20 @@ public class ClothesFragment extends Fragment {
         return fragment;
     }
 
-    public static ClothesFragment newClothesInstance() {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CLOTHES_ID, true);
-        ClothesFragment fragment = new ClothesFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if ( !(boolean)getArguments().getSerializable(ARG_NEW_CLOTHES)) {
-            UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
-            mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
-        } else {
-            isNew = true;
-        }
+        UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
+        mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mClothes != null)
-            ClothesLab.get(getActivity()).updateClothes(mClothes);
+        //ClothesLab.get(getActivity()).updateClothes(mClothes);
     }
 
     @Nullable
@@ -109,18 +95,14 @@ public class ClothesFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isNew) {
-                    mClothes = new Clothes();
-                    ClothesLab.get(getActivity()).addClothes(mClothes);
-                }
+
                 mClothes.setmName(mClothingTitle.getText().toString());
                 mClothes.setmSize(mClothingSize.getText().toString());
                 mClothes.setmCost(mClothingCost.getText().toString());
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
                 mClothes.setmBrandId(UUID.randomUUID());
-                Clothes clothes = new Clothes();
-                ClothesLab.get(getActivity()).addClothes(clothes);
+                ClothesLab.get(getActivity()).updateClothes(mClothes);
                 getActivity().finish();
             }
         });
@@ -152,8 +134,4 @@ public class ClothesFragment extends Fragment {
         return brandName + " " + clothesName + " DIY fixes and modifications";
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }
