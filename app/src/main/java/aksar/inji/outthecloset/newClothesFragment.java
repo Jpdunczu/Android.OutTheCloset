@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.UUID;
 
@@ -25,6 +27,9 @@ public class newClothesFragment extends Fragment {
 
     private Button mSaveButton;
     private Button mCancelButton;
+
+    private ImageButton mPhotoButton;
+    private ImageView mPhotoView;
 
     public static newClothesFragment newClothesInstance() {
         return new newClothesFragment();
@@ -49,6 +54,9 @@ public class newClothesFragment extends Fragment {
 
         mSaveButton = (Button) view.findViewById(R.id.save_button);
         mCancelButton = (Button) view.findViewById(R.id.cancel_button);
+
+        mPhotoButton = (ImageButton) view.findViewById(R.id.clothes_camnera);
+        mPhotoView = (ImageView) view.findViewById(R.id.clothes_pic);
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
