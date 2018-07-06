@@ -24,7 +24,7 @@ public class Clothes {
     private String mColor;
     private String mNotes;
     private Boolean mDIY;
-    private String brandName;
+    private String mBrandName;
     private int position;
 
     public Clothes() {
@@ -38,6 +38,20 @@ public class Clothes {
         mNotes = "";
         mDIY = false;
     }
+
+    public Clothes(UUID brandId, String brandName) {
+        mId = UUID.randomUUID();
+        mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
+        mBrandId = brandId;
+        mBrandName = brandName;
+        mName = "";
+        mCost = "";
+        mSize = "";
+        mColor = "";
+        mNotes = "";
+        mDIY = false;
+    }
+
 
     public Clothes(UUID id) {
         mId = id;
@@ -122,7 +136,7 @@ public class Clothes {
     }
 
     public String getBrandName() {
-        return brandName;
+        return mBrandName;
     }
 
     public String getPhotoFilename() {

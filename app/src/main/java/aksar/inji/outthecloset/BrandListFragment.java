@@ -66,7 +66,7 @@ public class BrandListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), ClothesListActivity.class);
+            Intent intent = ClothesListActivity.newIntent(getActivity(), mBrand.getmId());
             startActivity(intent);
         }
     }

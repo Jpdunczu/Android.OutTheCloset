@@ -57,6 +57,28 @@ public class ClothesLab {
 				);
 	}
 
+	public List<Clothes> getClothesByBrand(UUID brandId) {
+
+		List<Clothes> clothes = new ArrayList<>();
+
+		ClothesCursorWrapper cursor = queryClothes(
+				ClothesTable.Cols.brandId + " = ?",
+				new String[] { brandId.toString() }
+		);
+
+		try {
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				clothes.add(cursor.getClothes());
+				cursor.moveToNext();
+			}
+		} finally {
+			cursor.close();
+		}
+		//return mClothes;
+		return clothes;
+	}
+
 	public List<Clothes> getClothes() {
 
 	    List<Clothes> clothes = new ArrayList<>();

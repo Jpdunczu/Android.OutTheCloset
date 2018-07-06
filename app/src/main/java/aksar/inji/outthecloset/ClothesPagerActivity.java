@@ -29,10 +29,6 @@ public class ClothesPagerActivity extends AppCompatActivity {
         return intent;
     }
 
-    public static Intent newClothesIntent(Context context) {
-        isNew = true;
-        return new Intent(context, ClothesPagerActivity.class);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +46,6 @@ public class ClothesPagerActivity extends AppCompatActivity {
                 }
             }
 
-
-
-
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
@@ -60,7 +53,7 @@ public class ClothesPagerActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 Clothes clothes = mClothes.get(position);
                 if (!isNew)
-                    return ClothesFragment.newInstance(clothes.getmId());
+                    return ClothesFragment.newInstance(clothes.getmId(), position);
                 else
                     return newClothesFragment.newClothesInstance();
             }

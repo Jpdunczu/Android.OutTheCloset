@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,14 +18,12 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 public class ClothesListFragment extends Fragment {
 
-    private static final String DIALOG_DELEETE = "DeleteDialog";
-    private static final int SAVE_SUCCESS = 1;
+    private static final String DIALOG_DELETE = "DeleteDialog";
     private static final int CONFIRM_DELETE = 0;
 
 	private RecyclerView mClothesRecyclerView;
@@ -102,6 +99,7 @@ public class ClothesListFragment extends Fragment {
                 return;
             }
             Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId());
+
             startActivity(intent);
         }
 
@@ -129,6 +127,9 @@ public class ClothesListFragment extends Fragment {
             return new ClothesHolder(layoutInflater, parent);
         }
 
+        // added position variable for future challenge to re-load only the one item which was edited, not the whole list in UpdateUi();
+        // mAdapter.notifyItemChanged(position);
+        //
         @Override
         public void onBindViewHolder(ClothesHolder holder, int position) {
             Clothes clothing = mClothes.get(position);
@@ -153,7 +154,8 @@ public class ClothesListFragment extends Fragment {
 
     private void updateUI() {
         ClothesLab clothesLab = ClothesLab.get(getActivity());
-        List<Clothes> clothes = clothesLab.getClothes();
+        UUID brandId = (UUID) getActivity().getIntent().getSerializableExtra(ClothesListActivity.EXTRA_BRAND_ID);
+        List<Clothes> clothes = clothesLab.getClothesByBrand(brandId);
 
         if(mAdapter == null) {
             mAdapter = new ClothesAdapter(clothes);
@@ -161,6 +163,7 @@ public class ClothesListFragment extends Fragment {
         } else {
             mAdapter.setmClothes(clothes);
             mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyItemChanged();
         }
     }
 
@@ -188,7 +191,7 @@ public class ClothesListFragment extends Fragment {
                     FragmentManager fragmentManager = getFragmentManager();
                     ConfirmDeleteFragment confirm = new ConfirmDeleteFragment();
                     confirm.setTargetFragment(ClothesListFragment.this, CONFIRM_DELETE);
-                    confirm.show(fragmentManager, DIALOG_DELEETE);
+                    confirm.show(fragmentManager, DIALOG_DELETE);
                 }
             default:
                 return super.onOptionsItemSelected(item);

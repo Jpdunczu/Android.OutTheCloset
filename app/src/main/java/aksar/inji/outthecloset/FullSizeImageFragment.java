@@ -30,6 +30,7 @@ public class FullSizeImageFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.full_size_image_dialog, null);
 
+        mPhotoView = (ImageView) view.findViewById(R.id.full_size_pic);
 
         mPhotoFile = ClothesLab.get(getActivity()).getPhotoFile(mClothes);
         Uri mPhotoUri = FileProvider.getUriForFile(getActivity(), "com.aksar.inji.outthecloset.fileprovider", mPhotoFile);
@@ -41,7 +42,7 @@ public class FullSizeImageFragment extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getActivity().finish();
+                        //getActivity().finish();
                     }
                 })
                 .create();
