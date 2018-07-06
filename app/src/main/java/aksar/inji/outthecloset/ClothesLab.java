@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -139,4 +140,13 @@ public class ClothesLab {
 
 	    return new ClothesCursorWrapper(cursor);
     }
+
+    /*
+    *
+    * PHOTO METHODS
+     */
+    public File getPhotoFile(Clothes clothes) {
+    	File filesDir = mContext.getFilesDir();
+    	return new File(filesDir, clothes.getPhotoFilename());
+	}
 }

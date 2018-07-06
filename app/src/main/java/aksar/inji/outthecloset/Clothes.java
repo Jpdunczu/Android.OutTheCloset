@@ -124,4 +124,8 @@ public class Clothes {
     public String getBrandName() {
         return brandName;
     }
+
+    public String getPhotoFilename() {
+        return "IMG_" + getmId().toString() + ".jpg";
+    }
 }

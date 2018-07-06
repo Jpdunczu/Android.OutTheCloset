@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class ClothesFragment extends Fragment {
 
     private static final String ARG_CLOTHES_ID = "clothes_id";
+    private static final String FULL_SIZE_IMAGE = "FullSizeImage";
 
     private Clothes mClothes;
 
@@ -38,6 +40,9 @@ public class ClothesFragment extends Fragment {
     private Button mSaveButton;
     private Button mCancelButton;
     private Button mDIYButton;
+
+    private ImageView mPhotoView;
+
 
 
     public static ClothesFragment newInstance(UUID clothesId) {
@@ -121,6 +126,15 @@ public class ClothesFragment extends Fragment {
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, getDIYReport());
                 startActivity(intent);
+            }
+        });
+
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FullSizeImageFragment dialog = FullSizeImageFragment.newInstance(mClothes);
+                dialog.show(fragmentManager, FULL_SIZE_IMAGE);
             }
         });
 

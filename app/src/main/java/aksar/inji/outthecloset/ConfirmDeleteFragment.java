@@ -15,9 +15,6 @@ import java.util.UUID;
 
 public class ConfirmDeleteFragment extends DialogFragment {
 
-    public static final String DELETE_CONFIRM =
-            "com.aksar.inji.outthecloset.delete";
-
     private static final String ARG_DELETE = "delete";
 
     public static ConfirmDeleteFragment newInstance(UUID clothesId) {
