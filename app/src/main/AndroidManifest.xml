@@ -23,7 +23,8 @@
         <activity android:name=".BrandActivity">
 
         </activity>
-        <activity android:name=".ClothesListActivity">
+        <activity android:name=".ClothesListActivity"
+            android:parentActivityName=".BrandListActivity">
 
         </activity>
         <activity android:name=".ClothesPagerActivity">

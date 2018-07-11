@@ -17,15 +17,16 @@ public class ClothesPagerActivity extends AppCompatActivity {
     private static final String EXTRA_CLOTHES_ID =
             "com.aksar.inji.outthecloset.clothes_id";
 
+    private static final String EXTRA_BRAND_ID =
+            "com.aksar.inji.outthecloset.brand_id";
 
     private ViewPager mViewPager;
     private List<Clothes> mClothes;
 
-    private static boolean isNew = false;
-
-    public static Intent newIntent(Context packageContext, UUID clothesId) {
+    public static Intent newIntent(Context packageContext, UUID clothesId, UUID brandId) {
         Intent intent = new Intent(packageContext, ClothesPagerActivity.class);
         intent.putExtra(EXTRA_CLOTHES_ID, clothesId);
+        intent.putExtra(EXTRA_BRAND_ID, brandId);
         return intent;
     }
 
@@ -38,7 +39,8 @@ public class ClothesPagerActivity extends AppCompatActivity {
 
 
             UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
-            mClothes = ClothesLab.get(this).getClothes();
+            UUID brandId = (UUID) getIntent().getSerializableExtra(EXTRA_BRAND_ID);
+            mClothes = ClothesLab.get(this).getClothesByBrand(brandId);
             for (int i = 0; i < mClothes.size(); i++) {
                 if (mClothes.get(i).getmId().equals(clothesId)) {
                     mViewPager.setCurrentItem(i);
@@ -52,10 +54,7 @@ public class ClothesPagerActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 Clothes clothes = mClothes.get(position);
-                if (!isNew)
-                    return ClothesFragment.newInstance(clothes.getmId(), position);
-                else
-                    return newClothesFragment.newClothesInstance();
+                return ClothesFragment.newInstance(clothes.getmId(), position);
             }
 
             @Override

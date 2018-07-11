@@ -114,7 +114,7 @@ public class ClothesListFragment extends Fragment {
                 mCheckBox.setVisibility(View.GONE);
                 return;
             }
-            Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId());
+            Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId(), mClothes.getmBrandId());
 
             startActivity(intent);
         }

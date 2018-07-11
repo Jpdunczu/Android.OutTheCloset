@@ -105,7 +105,6 @@ public class ClothesFragment extends Fragment {
                 mClothes.setmCost(mClothingCost.getText().toString());
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
-                mClothes.setmBrandId(UUID.randomUUID());
                 ClothesLab.get(getActivity()).updateClothes(mClothes);
                 getActivity().finish();
             }
