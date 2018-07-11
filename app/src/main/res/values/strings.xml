@@ -21,4 +21,6 @@
     <string name="brand_name">Brand:</string>
     <string name="brand_value">Value:</string>
     <string name="brand_item_count">Items:</string>
+    <string name="no_brands_dialog">The closet\'s empty</string>
+    <string name="no_clothes_diag_message">Looks like you have no clothes in your closet! Either do your laundry or click the quadrathorpe [+] in the top right corner to get started!</string>
 </resources>

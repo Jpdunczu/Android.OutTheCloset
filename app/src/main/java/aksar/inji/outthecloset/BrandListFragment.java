@@ -23,6 +23,8 @@ import java.util.List;
 
 public class BrandListFragment extends Fragment {
 
+    private static final String OOPS_NO_CLOTHES = "NoClothesInTheCloset";
+
     private RecyclerView mBrandRecyclerView;
     private BrandAdapter mAdapter;
 
@@ -54,6 +56,11 @@ public class BrandListFragment extends Fragment {
     private void updateUI() {
         BrandLab brandLab = BrandLab.get(getActivity());
         List<Brands> brands = brandLab.getmBrands();
+        if (brands.isEmpty()) {
+            FragmentManager fragmentManager = getFragmentManager();
+            NoBrandsFragment dialog = new NoBrandsFragment();
+            dialog.show(fragmentManager, OOPS_NO_CLOTHES);
+        }
 
         if (mAdapter == null) {
             mAdapter = new BrandAdapter(brands);
