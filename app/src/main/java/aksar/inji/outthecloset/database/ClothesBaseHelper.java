@@ -6,17 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import aksar.inji.outthecloset.database.ClothesDbSchema.ClothesTable;
 
+import static aksar.inji.outthecloset.database.ClothesDbSchema.BrandTable;
+
 public class ClothesBaseHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
     private static final String DATABASE_NAME = "clothesBase.db";
 
-    public ClothesBaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + ClothesTable.NAME + "(" +
+    public static final String CREATE_CLOTHES_TABLE = "create table " + ClothesTable.NAME + "(" +
             " _id integer primary key autoincrement, " +
             ClothesTable.Cols.brandId + ", " +
             ClothesTable.Cols.UUID + ", " +
@@ -27,12 +23,33 @@ public class ClothesBaseHelper extends SQLiteOpenHelper {
             ClothesTable.Cols.DATE + ", " +
             ClothesTable.Cols.NOTES + ", " +
             ClothesTable.Cols.DIY +
-            ")"
-        );
+            ")";
+
+    public static final String CREATE_BRAND_TABLE = "create table " + BrandTable.BRAND_NAME + "(" +
+            "_id integer primary key autoincrement, " +
+            BrandTable.Cols.brandId + ", " +
+            BrandTable.Cols.brandName + ", " +
+            BrandTable.Cols.COUNT + ", " +
+            BrandTable.Cols.WORTH +
+            ")";
+
+    public ClothesBaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_CLOTHES_TABLE);
+        db.execSQL(CREATE_BRAND_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // on upgrade drop older tables
+        db.execSQL("DROP TABLE IF EXISTS " + ClothesTable.NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + BrandTable.BRAND_NAME);
 
+        // create new tables
+        onCreate(db);
     }
 }

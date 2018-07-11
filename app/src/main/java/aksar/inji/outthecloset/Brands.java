@@ -1,5 +1,6 @@
 package aksar.inji.outthecloset;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Brands {
@@ -7,9 +8,25 @@ public class Brands {
     private String mBrandName;
     private String mBrandWorth;
     private String mBrandCount;
+    private List<Clothes> mClothes;
 
     public Brands() {
         mId = UUID.randomUUID();
+    }
+
+    public Brands(UUID brandId) {
+        mId = brandId;
+    }
+
+    public Brands(String brandName) {
+        mId = UUID.randomUUID();
+        mBrandName = brandName;
+        mBrandCount = "0";
+        mBrandWorth = "0.00";
+    }
+
+    public void addClothes(List<Clothes> clothes){
+        mClothes = clothes;
     }
 
     public UUID getmId() {
@@ -29,7 +46,7 @@ public class Brands {
     }
 
     public void setmBrandWorth(String mBrandWorth) {
-        this.mBrandWorth = mBrandWorth;
+        this.mBrandWorth = "$" + mBrandWorth;
     }
 
     public String getmBrandCount() {

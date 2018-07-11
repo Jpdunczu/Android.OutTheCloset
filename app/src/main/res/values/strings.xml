@@ -17,4 +17,8 @@
     <string name="save_new_clothes_button">Save</string>
     <string name="find_diy_button">Find DIY fixes for this item</string>
     <string name="cancel_button">Cancel</string>
+    <string name="new_brand">Add new Brand</string>
+    <string name="brand_name">Brand:</string>
+    <string name="brand_value">Value:</string>
+    <string name="brand_item_count">Items:</string>
 </resources>

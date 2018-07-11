@@ -16,4 +16,15 @@ public class ClothesDbSchema {
             public static final String DIY = "diy";
         }
     }
+
+    public static final class BrandTable {
+        public static final String BRAND_NAME = "brands";
+
+        public static final class Cols {
+            public static final String brandId = "brandId";
+            public static final String brandName = "brandName";
+            public static final String WORTH = "worth";
+            public static final String COUNT = "count";
+        }
+    }
 }

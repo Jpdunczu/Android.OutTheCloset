@@ -2,11 +2,14 @@ package aksar.inji.outthecloset;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,16 +28,28 @@ import java.util.UUID;
 public class ClothesListFragment extends Fragment {
 
     private static final String DIALOG_DELETE = "DeleteDialog";
+    private static final String BRAND_ID = "brand_id";
     private static final int CONFIRM_DELETE = 0;
 
 	private RecyclerView mClothesRecyclerView;
 	private ClothesAdapter mAdapter;
 
 	private UUID checkedClothes;
+	private UUID mBrandId;
+
+	public static ClothesListFragment newInstance(UUID brandId) {
+	    Bundle args = new Bundle();
+	    args.putSerializable(BRAND_ID, brandId);
+
+	    ClothesListFragment fragment = new ClothesListFragment();
+	    fragment.setArguments(args);
+	    return fragment;
+    }
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
+	    mBrandId = (UUID) getArguments().getSerializable(BRAND_ID);
 	    setHasOptionsMenu(true);
     }
 
@@ -53,7 +69,7 @@ public class ClothesListFragment extends Fragment {
 
 	// Implementing a View Holder and an Adapter
 
-    private class ClothesHolder extends RecyclerView.ViewHolder
+    private class ClothesHolder extends ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView mTitleTextView;
@@ -110,7 +126,6 @@ public class ClothesListFragment extends Fragment {
         }
     }
 
-
     // Adapter
     private class ClothesAdapter extends RecyclerView.Adapter<ClothesHolder> {
 
@@ -154,8 +169,7 @@ public class ClothesListFragment extends Fragment {
 
     private void updateUI() {
         ClothesLab clothesLab = ClothesLab.get(getActivity());
-        UUID brandId = (UUID) getActivity().getIntent().getSerializableExtra(ClothesListActivity.EXTRA_BRAND_ID);
-        List<Clothes> clothes = clothesLab.getClothesByBrand(brandId);
+        List<Clothes> clothes = clothesLab.getClothesByBrand(mBrandId);
 
         if(mAdapter == null) {
             mAdapter = new ClothesAdapter(clothes);
@@ -181,7 +195,7 @@ public class ClothesListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.new_clothes:
-                Intent intent = new Intent(getActivity(), ClothesActivity.class);
+                Intent intent = ClothesActivity.newIntent(getActivity(), mBrandId);
                 startActivity(intent);
                 return true;
             case R.id.delete_old_clothes:

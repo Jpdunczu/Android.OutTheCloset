@@ -1,13 +1,21 @@
 package aksar.inji.outthecloset;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +25,12 @@ public class BrandListFragment extends Fragment {
 
     private RecyclerView mBrandRecyclerView;
     private BrandAdapter mAdapter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,15 +45,26 @@ public class BrandListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         BrandLab brandLab = BrandLab.get(getActivity());
         List<Brands> brands = brandLab.getmBrands();
 
-        mAdapter = new BrandAdapter(brands);
-        mBrandRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new BrandAdapter(brands);
+            mBrandRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setBrands(brands);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
-    private class BrandHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class BrandHolder extends ViewHolder implements View.OnClickListener {
 
         private TextView mBrandNameTV;
         private TextView mBrandWorthTV;
@@ -71,6 +96,7 @@ public class BrandListFragment extends Fragment {
         }
     }
 
+
     private class BrandAdapter extends RecyclerView.Adapter<BrandHolder> {
 
         private List<Brands> mBrands;
@@ -95,6 +121,32 @@ public class BrandListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mBrands.size();
+        }
+
+        public void setBrands(List<Brands> brands) {
+            mBrands = brands;
+        }
+    }
+
+    /*
+     *
+     * OPTIONS MENU
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.brands_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.new_brand:
+                Intent intent = new Intent(getActivity(), BrandActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

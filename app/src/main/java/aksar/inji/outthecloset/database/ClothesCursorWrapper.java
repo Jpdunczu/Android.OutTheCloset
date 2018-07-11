@@ -4,8 +4,11 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import java.util.UUID;
+import java.io.File;
 
+import aksar.inji.outthecloset.Brands;
 import aksar.inji.outthecloset.Clothes;
+import aksar.inji.outthecloset.database.ClothesDbSchema.BrandTable;
 import aksar.inji.outthecloset.database.ClothesDbSchema.ClothesTable;
 
 public class ClothesCursorWrapper extends CursorWrapper {
@@ -40,5 +43,19 @@ public class ClothesCursorWrapper extends CursorWrapper {
         clothes.setmDIY(diy);
 
         return clothes;
+    }
+
+    public Brands getBrands() {
+        String brandId = getString(getColumnIndex(BrandTable.Cols.brandId));
+        String brandName = getString(getColumnIndex(BrandTable.Cols.brandName));
+        String brandCost = getString(getColumnIndex(BrandTable.Cols.WORTH));
+        String brandCount = getString(getColumnIndex(BrandTable.Cols.COUNT));
+
+        Brands brands = new Brands(UUID.fromString(brandId));
+        brands.setmBrandWorth(brandCost);
+        brands.setmBrandCount(brandCount);
+        brands.setmBrandName(brandName);
+
+        return brands;
     }
 }

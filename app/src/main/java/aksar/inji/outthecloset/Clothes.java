@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class Clothes {
     private Boolean mDIY;
     private String mBrandName;
     private int position;
+    private String mPhotoFile;
 
     public Clothes() {
         mId = UUID.randomUUID();
@@ -37,6 +39,7 @@ public class Clothes {
         mColor = "";
         mNotes = "";
         mDIY = false;
+        mPhotoFile = "";
     }
 
     public Clothes(UUID brandId, String brandName) {
@@ -50,6 +53,7 @@ public class Clothes {
         mColor = "";
         mNotes = "";
         mDIY = false;
+        mPhotoFile = "";
     }
 
 
@@ -142,4 +146,5 @@ public class Clothes {
     public String getPhotoFilename() {
         return "IMG_" + getmId().toString() + ".jpg";
     }
+
 }

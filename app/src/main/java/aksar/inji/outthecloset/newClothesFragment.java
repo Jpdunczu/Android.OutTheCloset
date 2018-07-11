@@ -25,6 +25,7 @@ import java.util.UUID;
 
 public class newClothesFragment extends Fragment {
 
+    private static final String ARG_BRAND_ID = "brandId";
     private static final int REQUEST_PHOTO = 2;
 
     private Clothes mClothes;
@@ -41,15 +42,22 @@ public class newClothesFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
+    private UUID mBrandId;
 
-    public static newClothesFragment newClothesInstance() {
-        return new newClothesFragment();
+    public static newClothesFragment newClothesInstance(UUID brandId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_BRAND_ID, brandId);
+
+        newClothesFragment fragment = new newClothesFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mBrandId = (UUID) getArguments().getSerializable(ARG_BRAND_ID);
         mClothes = new Clothes();
         mPhotoFile = ClothesLab.get(getActivity()).getPhotoFile(mClothes);
     }
@@ -105,7 +113,7 @@ public class newClothesFragment extends Fragment {
                 mClothes.setmCost(mClothingCost.getText().toString());
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
-                mClothes.setmBrandId(UUID.randomUUID());
+                mClothes.setmBrandId(mBrandId);
                 ClothesLab.get(getActivity()).addClothes(mClothes);
                 getActivity().finish();
             }

@@ -29,26 +29,19 @@ public class BrandFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_brand, container, false);
 
         mBrandName = (EditText) v.findViewById(R.id.brand_name);
-        mBrandName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mBrand.setmBrandName(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         mCreateBrandButton = (Button) v.findViewById(R.id.create_brand);
         mCreateBrandButton.setText("Create New Brand");
-        mCreateBrandButton.setEnabled(false);
+        mCreateBrandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBrand.setmBrandName(mBrandName.getText().toString());
+                mBrand.setmBrandCount("0");
+                mBrand.setmBrandWorth("0.00");
+                BrandLab.get(getActivity()).addBrand(mBrand);
+                getActivity().finish();
+            }
+        });
 
         return v;
     }

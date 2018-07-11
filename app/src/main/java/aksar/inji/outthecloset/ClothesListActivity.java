@@ -16,8 +16,8 @@ public class ClothesListActivity extends SingleFragmentActivity {
 	
 	@Override
 	protected Fragment createFragment() {
-
-		return new ClothesListFragment();
+		UUID brandId = (UUID) getIntent().getSerializableExtra(EXTRA_BRAND_ID);
+		return ClothesListFragment.newInstance(brandId);
 	}
 
 	public static Intent newIntent(Context context, UUID brandId) {
