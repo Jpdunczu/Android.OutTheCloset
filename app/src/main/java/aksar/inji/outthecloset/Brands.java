@@ -1,5 +1,6 @@
 package aksar.inji.outthecloset;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,13 +10,22 @@ public class Brands {
     private String mBrandWorth;
     private String mBrandCount;
     private List<Clothes> mClothes;
+    private BigDecimal mBrandWorthDec;
 
     public Brands() {
         mId = UUID.randomUUID();
+        mBrandName = "";
+        mBrandCount = "0";
+        mBrandWorth = "0.00";
+        mBrandWorthDec = new BigDecimal("0.00");
     }
 
     public Brands(UUID brandId) {
         mId = brandId;
+        mBrandName = "";
+        mBrandCount = "0";
+        mBrandWorth = "0.00";
+        mBrandWorthDec = new BigDecimal("0.00");
     }
 
     public Brands(String brandName) {
@@ -23,6 +33,7 @@ public class Brands {
         mBrandName = brandName;
         mBrandCount = "0";
         mBrandWorth = "0.00";
+        mBrandWorthDec = new BigDecimal("0.00");
     }
 
     public void addClothes(List<Clothes> clothes){
@@ -46,7 +57,7 @@ public class Brands {
     }
 
     public void setmBrandWorth(String mBrandWorth) {
-        this.mBrandWorth = "$" + mBrandWorth;
+        this.mBrandWorth = mBrandWorth;
     }
 
     public String getmBrandCount() {
@@ -59,5 +70,14 @@ public class Brands {
 
     public List<Clothes> getmClothes() {
         return mClothes;
+    }
+
+    public BigDecimal getmBrandWorthDec() {
+        return mBrandWorthDec;
+    }
+
+    public void setmBrandWorthDec(String mBrandWorthDec) {
+        BigDecimal value = new BigDecimal(mBrandWorthDec);
+        this.mBrandWorthDec.add(value);
     }
 }

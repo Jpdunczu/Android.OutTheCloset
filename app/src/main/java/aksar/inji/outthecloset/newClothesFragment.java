@@ -68,7 +68,6 @@ public class newClothesFragment extends Fragment {
 
         PackageManager packageManager = getActivity().getPackageManager();
 
-
         mClothingTitle = (EditText) view.findViewById(R.id.clothing_title);
         mClothingSize = (EditText) view.findViewById(R.id.clothing_size);
         mClothingCost = (EditText) view.findViewById(R.id.clothing_cost);
@@ -107,13 +106,16 @@ public class newClothesFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mClothes.setmName(mClothingTitle.getText().toString());
                 mClothes.setmSize(mClothingSize.getText().toString());
-                mClothes.setmCost(mClothingCost.getText().toString());
+                String cost = mClothingCost.getText().toString();
+                mClothes.setmCost(cost);
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
                 mClothes.setmBrandId(mBrandId);
+                Brands brand = BrandLab.get(getActivity()).getBrand(mBrandId);
+                brand.setmBrandWorthDec(cost);
+                BrandLab.get(getActivity()).updateBrand(brand);
                 ClothesLab.get(getActivity()).addClothes(mClothes);
                 getActivity().finish();
             }

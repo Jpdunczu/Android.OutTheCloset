@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +77,7 @@ public class BrandListFragment extends Fragment {
         private TextView mBrandNameTV;
         private TextView mBrandWorthTV;
         private TextView mBrandItemCount;
+        private ImageView mBrandHasCLothes;
 
         private Brands mBrand;
 
@@ -87,13 +89,15 @@ public class BrandListFragment extends Fragment {
             mBrandNameTV = (TextView) itemView.findViewById(R.id.brand_name);
             mBrandWorthTV = (TextView) itemView.findViewById(R.id.brand_cost);
             mBrandItemCount = (TextView) itemView.findViewById(R.id.item_count);
+            mBrandHasCLothes = (ImageView) itemView.findViewById(R.id.brand_has_clothes);
         }
 
         public void bind(Brands brands) {
             mBrand = brands;
             mBrandNameTV.setText(mBrand.getmBrandName());
-            mBrandWorthTV.setText(mBrand.getmBrandWorth());
+            mBrandWorthTV.setText(mBrand.getmBrandWorthDec().toString());
             mBrandItemCount.setText(mBrand.getmBrandCount());
+            mBrandHasCLothes.setVisibility(mBrand.getmBrandWorthDec().equals("0.00") ? View.GONE : View.VISIBLE);
         }
 
         @Override
@@ -102,7 +106,6 @@ public class BrandListFragment extends Fragment {
             startActivity(intent);
         }
     }
-
 
     private class BrandAdapter extends RecyclerView.Adapter<BrandHolder> {
 

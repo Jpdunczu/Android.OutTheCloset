@@ -70,6 +70,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:hint="@string/clothing_cost_hint"
+        android:inputType="numberDecimal"
         android:textAllCaps="true"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"

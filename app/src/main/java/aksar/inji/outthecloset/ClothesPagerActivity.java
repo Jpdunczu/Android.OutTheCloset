@@ -37,7 +37,6 @@ public class ClothesPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_clothes_pager);
         mViewPager = (ViewPager) findViewById(R.id.clothes_view_pager);
 
-
             UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
             UUID brandId = (UUID) getIntent().getSerializableExtra(EXTRA_BRAND_ID);
             mClothes = ClothesLab.get(this).getClothesByBrand(brandId);

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +53,11 @@ public class BrandLab {
 
         //return mBrands;
         return brands;
+    }
+
+    public String getBrandValue(Brands brand) {
+        BigDecimal worth = brand.getmBrandWorthDec();
+        return worth.toString();
     }
 
     public void addBrand(Brands brands) {

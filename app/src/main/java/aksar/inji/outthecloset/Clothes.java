@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -21,13 +22,13 @@ public class Clothes {
     private String mName;
     private String mDate;
     private String mCost;
+    private Double mCostDec;
     private String mSize;
     private String mColor;
     private String mNotes;
     private Boolean mDIY;
     private String mBrandName;
     private int position;
-    private String mPhotoFile;
 
     public Clothes() {
         mId = UUID.randomUUID();
@@ -39,7 +40,6 @@ public class Clothes {
         mColor = "";
         mNotes = "";
         mDIY = false;
-        mPhotoFile = "";
     }
 
     public Clothes(UUID brandId, String brandName) {
@@ -53,9 +53,7 @@ public class Clothes {
         mColor = "";
         mNotes = "";
         mDIY = false;
-        mPhotoFile = "";
     }
-
 
     public Clothes(UUID id) {
         mId = id;
@@ -147,4 +145,15 @@ public class Clothes {
         return "IMG_" + getmId().toString() + ".jpg";
     }
 
+    public Double getmCostDec() {
+        return mCostDec;
+    }
+
+    public void setmCostDec(Double mCostDec) {
+        this.mCostDec = mCostDec;
+    }
+
+    public Double getValueOf() {
+        return Double.valueOf(mCost);
+    }
 }
