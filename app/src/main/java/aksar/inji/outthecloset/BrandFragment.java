@@ -36,7 +36,7 @@ public class BrandFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mBrand.setmBrandName(mBrandName.getText().toString());
-                mBrand.setmBrandCount("0");
+                mBrand.setmBrandCount(0);
                 mBrand.setmBrandWorth("0.00");
                 mBrand.setmBrandWorthDec("0.00");
                 BrandLab.get(getActivity()).addBrand(mBrand);

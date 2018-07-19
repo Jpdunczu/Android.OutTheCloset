@@ -1,6 +1,7 @@
 package aksar.inji.outthecloset;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.UUID;
 
 /**
@@ -38,6 +40,7 @@ public class ClothesFragment extends Fragment {
     private Button mDIYButton;
 
     private ImageView mPhotoView;
+    private File mPhotoFile;
 
     private static int position;
 
@@ -58,7 +61,7 @@ public class ClothesFragment extends Fragment {
 
         UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
         mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
-
+        mPhotoFile = ClothesLab.get(getActivity()).getPhotoFile(mClothes);
     }
 
     @Override
@@ -73,6 +76,7 @@ public class ClothesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_clothing, container, false);
 
         mPhotoView = (ImageView) v.findViewById(R.id.clothes_pic);
+        updatePhotoView();
 
         mClothingTitle = (EditText) v.findViewById(R.id.clothing_title);
         mClothingTitle.setText(mClothes.getmName());
@@ -146,4 +150,12 @@ public class ClothesFragment extends Fragment {
         return brandName + " " + clothesName + " DIY fixes and modifications";
     }
 
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
+    }
 }

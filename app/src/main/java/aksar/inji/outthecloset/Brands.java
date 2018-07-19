@@ -8,14 +8,14 @@ public class Brands {
     private UUID mId;
     private String mBrandName;
     private String mBrandWorth;
-    private String mBrandCount;
+    private int mBrandCount;
     private List<Clothes> mClothes;
     private BigDecimal mBrandWorthDec;
 
     public Brands() {
         mId = UUID.randomUUID();
         mBrandName = "";
-        mBrandCount = "0";
+        mBrandCount = 0;
         mBrandWorth = "0.00";
         mBrandWorthDec = new BigDecimal("0.00");
     }
@@ -23,7 +23,7 @@ public class Brands {
     public Brands(UUID brandId) {
         mId = brandId;
         mBrandName = "";
-        mBrandCount = "0";
+        mBrandCount = 0;
         mBrandWorth = "0.00";
         mBrandWorthDec = new BigDecimal("0.00");
     }
@@ -31,7 +31,7 @@ public class Brands {
     public Brands(String brandName) {
         mId = UUID.randomUUID();
         mBrandName = brandName;
-        mBrandCount = "0";
+        mBrandCount = 0;
         mBrandWorth = "0.00";
         mBrandWorthDec = new BigDecimal("0.00");
     }
@@ -60,11 +60,11 @@ public class Brands {
         this.mBrandWorth = mBrandWorth;
     }
 
-    public String getmBrandCount() {
+    public int getmBrandCount() {
         return mBrandCount;
     }
 
-    public void setmBrandCount(String mBrandCount) {
+    public void setmBrandCount(int mBrandCount) {
         this.mBrandCount = mBrandCount;
     }
 
@@ -79,5 +79,11 @@ public class Brands {
     public void setmBrandWorthDec(String mBrandWorthDec) {
         BigDecimal value = new BigDecimal(mBrandWorthDec);
         this.mBrandWorthDec.add(value);
+        setmBrandWorth(mBrandWorthDec.toString());
+    }
+
+    public void setmBrandWorthBigDec(BigDecimal worth) {
+        this.mBrandWorthDec.add(worth);
+        setmBrandWorth(mBrandWorthDec.toString());
     }
 }

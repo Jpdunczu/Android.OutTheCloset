@@ -28,6 +28,8 @@ public class BrandListFragment extends Fragment {
 
     private RecyclerView mBrandRecyclerView;
     private BrandAdapter mAdapter;
+    private BrandLab lab;
+    private List<Brands> brands;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,14 @@ public class BrandListFragment extends Fragment {
         mBrandRecyclerView = (RecyclerView) view.findViewById(R.id.brand_recycler_view);
         mBrandRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        lab = BrandLab.get(getActivity());
+        brands = lab.getmBrands();
+        if (brands.isEmpty()) {
+            FragmentManager fragmentManager = getFragmentManager();
+            NoBrandsFragment dialog = new NoBrandsFragment();
+            dialog.show(fragmentManager, OOPS_NO_CLOTHES);
+        }
+
         updateUI();
 
         return view;
@@ -55,13 +65,9 @@ public class BrandListFragment extends Fragment {
     }
 
     private void updateUI() {
-        BrandLab brandLab = BrandLab.get(getActivity());
-        List<Brands> brands = brandLab.getmBrands();
-        if (brands.isEmpty()) {
-            FragmentManager fragmentManager = getFragmentManager();
-            NoBrandsFragment dialog = new NoBrandsFragment();
-            dialog.show(fragmentManager, OOPS_NO_CLOTHES);
-        }
+        //BrandLab brandLab = BrandLab.get(getActivity());
+        brands = lab.getmBrands();
+
 
         if (mAdapter == null) {
             mAdapter = new BrandAdapter(brands);
@@ -95,8 +101,8 @@ public class BrandListFragment extends Fragment {
         public void bind(Brands brands) {
             mBrand = brands;
             mBrandNameTV.setText(mBrand.getmBrandName());
-            mBrandWorthTV.setText(mBrand.getmBrandWorthDec().toString());
-            mBrandItemCount.setText(mBrand.getmBrandCount());
+            mBrandWorthTV.setText("$" + mBrand.getmBrandWorth());
+            mBrandItemCount.setText(String.valueOf(mBrand.getmBrandCount()));
             mBrandHasCLothes.setVisibility(mBrand.getmBrandWorthDec().equals("0.00") ? View.GONE : View.VISIBLE);
         }
 

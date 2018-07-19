@@ -9,8 +9,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@mipmap/ic_real_launcher_icon"
+        android:label="OutTheCloset"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".BrandListActivity">

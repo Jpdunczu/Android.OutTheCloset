@@ -53,7 +53,7 @@ public class ClothesCursorWrapper extends CursorWrapper {
 
         Brands brands = new Brands(UUID.fromString(brandId));
         brands.setmBrandWorth(brandCost);
-        brands.setmBrandCount(brandCount);
+        brands.setmBrandCount(Integer.valueOf(brandCount));
         brands.setmBrandName(brandName);
 
         return brands;

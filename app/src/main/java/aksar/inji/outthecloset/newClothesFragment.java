@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -90,6 +91,8 @@ public class newClothesFragment extends Fragment {
             public void onClick(View v) {
                 Uri uri = FileProvider.getUriForFile(getActivity(), "com.aksar.inji.outthecloset.fileprovider", mPhotoFile);
 
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
                 List<ResolveInfo> cameraActivities = getActivity().getPackageManager().queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
 
                 for (ResolveInfo activity : cameraActivities) {
@@ -108,13 +111,16 @@ public class newClothesFragment extends Fragment {
             public void onClick(View view) {
                 mClothes.setmName(mClothingTitle.getText().toString());
                 mClothes.setmSize(mClothingSize.getText().toString());
-                String cost = mClothingCost.getText().toString();
-                mClothes.setmCost(cost);
+                BigDecimal cost = new BigDecimal(mClothingCost.getText().toString());
+                mClothes.setmCostDec(cost.doubleValue());
+                mClothes.setmCost(cost.toString());
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
                 mClothes.setmBrandId(mBrandId);
                 Brands brand = BrandLab.get(getActivity()).getBrand(mBrandId);
-                brand.setmBrandWorthDec(cost);
+                brand.setmBrandWorthBigDec(cost);
+                int count = brand.getmBrandCount();
+                brand.setmBrandCount(count+1);
                 BrandLab.get(getActivity()).updateBrand(brand);
                 ClothesLab.get(getActivity()).addClothes(mClothes);
                 getActivity().finish();

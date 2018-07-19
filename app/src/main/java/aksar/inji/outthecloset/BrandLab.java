@@ -119,7 +119,7 @@ public class BrandLab {
         ContentValues values = new ContentValues();
         values.put(BrandTable.Cols.brandId, brands.getmId().toString());
         values.put(BrandTable.Cols.brandName, brands.getmBrandName());
-        values.put(BrandTable.Cols.COUNT, brands.getmBrandCount());
+        values.put(BrandTable.Cols.COUNT, String.valueOf(brands.getmBrandCount()));
         values.put(BrandTable.Cols.WORTH, brands.getmBrandWorth());
 
         return values;

@@ -223,6 +223,10 @@ public class ClothesListFragment extends Fragment {
         }
 
         if (requestCode == CONFIRM_DELETE) {
+            Brands brand = BrandLab.get(getActivity()).getBrand(checkedClothes);
+            int count = brand.getmBrandCount();
+            brand.setmBrandCount(count-1);
+            BrandLab.get(getActivity()).updateBrand(brand);
             ClothesLab.get(getActivity()).deleteClothes(checkedClothes);
             //mCheckBox.setVisibility(View.GONE);
             updateUI();
