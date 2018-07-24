@@ -1,21 +1,29 @@
 package aksar.inji.outthecloset;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,6 +34,7 @@ public class ClothesFragment extends Fragment {
 
     private static final String ARG_CLOTHES_ID = "clothes_id";
     private static final String FULL_SIZE_IMAGE = "FullSizeImage";
+    private static final int REQUEST_PHOTO = 2;
 
     private Clothes mClothes;
 
@@ -38,14 +47,12 @@ public class ClothesFragment extends Fragment {
     private Button mSaveButton;
     private Button mCancelButton;
     private Button mDIYButton;
+    private ImageButton mPhotoButton;
 
     private ImageView mPhotoView;
     private File mPhotoFile;
 
-    private static int position;
-
     public static ClothesFragment newInstance(UUID clothesId, int pos) {
-        position = pos;
         Bundle args = new Bundle();
         args.putSerializable(ARG_CLOTHES_ID, clothesId);
 
@@ -75,6 +82,33 @@ public class ClothesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_clothing, container, false);
 
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        // Setting up PhotoButton
+        //
+        mPhotoButton = (ImageButton) v.findViewById(R.id.clothes_camnera);
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        boolean canTakePhoto = mPhotoFile != null && captureImage.resolveActivity(packageManager) != null;
+        mPhotoButton.setEnabled(canTakePhoto);
+
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = FileProvider.getUriForFile(getActivity(), "com.aksar.inji.outthecloset.fileprovider", mPhotoFile);
+
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+                List<ResolveInfo> cameraActivities = getActivity().getPackageManager().queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
+
+                for (ResolveInfo activity : cameraActivities) {
+                    getActivity().grantUriPermission(activity.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
+
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+            }
+        });
+
         mPhotoView = (ImageView) v.findViewById(R.id.clothes_pic);
         updatePhotoView();
 
@@ -103,12 +137,26 @@ public class ClothesFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Brands brand = BrandLab.get(getActivity()).getBrand(mClothes.getmBrandId());
                 mClothes.setmName(mClothingTitle.getText().toString());
                 mClothes.setmSize(mClothingSize.getText().toString());
-                mClothes.setmCost(mClothingCost.getText().toString());
+                String mCost = mClothingCost.getText().toString();
+                if (!mCost.equals("")) {
+                    BigDecimal cost = new BigDecimal(mCost);
+                    BigDecimal worth = new BigDecimal(brand.getmBrandWorth());
+                    BigDecimal result = cost.add(worth);
+                    mClothes.setmCostDec(cost.doubleValue());
+                    mClothes.setmCost(cost.toString());
+                    brand.setmBrandWorth(result.toString());
+                } else {
+                    mClothes.setmCostDec(0.00);
+                    mClothes.setmCost("0.00");
+                }
+
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
+
+                BrandLab.get(getActivity()).updateBrand(brand);
                 ClothesLab.get(getActivity()).updateClothes(mClothes);
                 getActivity().finish();
             }
@@ -156,6 +204,17 @@ public class ClothesFragment extends Fragment {
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_PHOTO) {
+            Uri uri = FileProvider.getUriForFile(getActivity(), "com.aksar.inji.outthecloset.fileprovider", mPhotoFile);
+
+            getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            updatePhotoView();
         }
     }
 }

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,16 +112,26 @@ public class newClothesFragment extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Brands brand = BrandLab.get(getActivity()).getBrand(mBrandId);
                 mClothes.setmName(mClothingTitle.getText().toString());
                 mClothes.setmSize(mClothingSize.getText().toString());
-                BigDecimal cost = new BigDecimal(mClothingCost.getText().toString());
-                mClothes.setmCostDec(cost.doubleValue());
-                mClothes.setmCost(cost.toString());
+                String mCost = mClothingCost.getText().toString();
+                if (!mCost.equals("")) {
+                    BigDecimal cost = new BigDecimal(mCost);
+                    BigDecimal worth = new BigDecimal(brand.getmBrandWorth());
+                    BigDecimal result = cost.add(worth);
+                    mClothes.setmCostDec(cost.doubleValue());
+                    mClothes.setmCost(cost.toString());
+                    brand.setmBrandWorth(result.toString());
+                } else {
+                    mClothes.setmCostDec(0.00);
+                    mClothes.setmCost("0.00");
+                }
+
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
                 mClothes.setmBrandId(mBrandId);
-                Brands brand = BrandLab.get(getActivity()).getBrand(mBrandId);
-                brand.setmBrandWorthBigDec(cost);
+
                 int count = brand.getmBrandCount();
                 brand.setmBrandCount(count+1);
                 BrandLab.get(getActivity()).updateBrand(brand);
@@ -141,7 +154,7 @@ public class newClothesFragment extends Fragment {
     //
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
+            mPhotoView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_ootc_title));
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
@@ -150,7 +163,7 @@ public class newClothesFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == REQUEST_PHOTO) {
+        if (requestCode == REQUEST_PHOTO) {
             Uri uri = FileProvider.getUriForFile(getActivity(), "com.aksar.inji.outthecloset.fileprovider", mPhotoFile);
 
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);

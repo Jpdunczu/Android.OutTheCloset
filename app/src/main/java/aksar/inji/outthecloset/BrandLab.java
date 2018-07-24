@@ -55,11 +55,6 @@ public class BrandLab {
         return brands;
     }
 
-    public String getBrandValue(Brands brand) {
-        BigDecimal worth = brand.getmBrandWorthDec();
-        return worth.toString();
-    }
-
     public void addBrand(Brands brands) {
         ContentValues values = getContentValues(brands);
 

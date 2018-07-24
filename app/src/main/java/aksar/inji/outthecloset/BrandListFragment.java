@@ -100,10 +100,10 @@ public class BrandListFragment extends Fragment {
 
         public void bind(Brands brands) {
             mBrand = brands;
-            mBrandNameTV.setText(mBrand.getmBrandName());
-            mBrandWorthTV.setText("$" + mBrand.getmBrandWorth());
-            mBrandItemCount.setText(String.valueOf(mBrand.getmBrandCount()));
-            mBrandHasCLothes.setVisibility(mBrand.getmBrandWorthDec().equals("0.00") ? View.GONE : View.VISIBLE);
+            mBrandNameTV.setText(brands.getmBrandName());
+            mBrandWorthTV.setText("$" + brands.getmBrandWorth());
+            mBrandItemCount.setText(String.valueOf(brands.getmBrandCount()));
+            mBrandHasCLothes.setVisibility(brands.getmBrandCount() == 0 ? View.GONE : View.VISIBLE);
         }
 
         @Override

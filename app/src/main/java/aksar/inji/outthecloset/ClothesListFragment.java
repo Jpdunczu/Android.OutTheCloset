@@ -22,6 +22,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -103,7 +104,7 @@ public class ClothesListFragment extends Fragment {
             mClothes = clothing;
             mTitleTextView.setText(mClothes.getmName());
             mDateTextView.setText(mClothes.getmDate().toString());
-            mCostTextView.setText(mClothes.getmCost());
+            mCostTextView.setText("$" + mClothes.getmCost());
         }
 
         @Override
@@ -114,7 +115,7 @@ public class ClothesListFragment extends Fragment {
                 mCheckBox.setVisibility(View.GONE);
                 return;
             }
-            Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId(), mClothes.getmBrandId());
+            Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId(), mBrandId);
 
             startActivity(intent);
         }
@@ -129,10 +130,10 @@ public class ClothesListFragment extends Fragment {
     // Adapter
     private class ClothesAdapter extends RecyclerView.Adapter<ClothesHolder> {
 
-        private List<Clothes> mClothes;
+        private List<Clothes> mClothesList;
 
         public ClothesAdapter(List<Clothes> clothes) {
-            mClothes = clothes;
+            mClothesList = clothes;
         }
 
         @Override
@@ -147,17 +148,17 @@ public class ClothesListFragment extends Fragment {
         //
         @Override
         public void onBindViewHolder(ClothesHolder holder, int position) {
-            Clothes clothing = mClothes.get(position);
+            Clothes clothing = mClothesList.get(position);
             holder.bind(clothing);
         }
 
         @Override
         public int getItemCount() {
-            return mClothes.size();
+            return mClothesList.size();
         }
 
         public void setmClothes(List<Clothes> clothes) {
-            mClothes = clothes;
+            mClothesList = clothes;
         }
     }
 
@@ -223,9 +224,14 @@ public class ClothesListFragment extends Fragment {
         }
 
         if (requestCode == CONFIRM_DELETE) {
-            Brands brand = BrandLab.get(getActivity()).getBrand(checkedClothes);
+
+            Clothes clothes = ClothesLab.get(getActivity()).getClothe(checkedClothes);
+            Brands brand = BrandLab.get(getActivity()).getBrand(clothes.getmBrandId());
             int count = brand.getmBrandCount();
             brand.setmBrandCount(count-1);
+            BigDecimal cost = new BigDecimal(clothes.getmCost());
+            BigDecimal worth = cost.subtract(cost);
+            brand.setmBrandWorth(worth.toString());
             BrandLab.get(getActivity()).updateBrand(brand);
             ClothesLab.get(getActivity()).deleteClothes(checkedClothes);
             //mCheckBox.setVisibility(View.GONE);

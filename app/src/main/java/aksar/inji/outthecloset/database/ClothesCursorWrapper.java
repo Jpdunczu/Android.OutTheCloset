@@ -3,6 +3,7 @@ package aksar.inji.outthecloset.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.io.File;
 
