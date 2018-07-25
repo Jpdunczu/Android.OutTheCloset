@@ -31,6 +31,7 @@ public class ClothesListFragment extends Fragment {
     private static final String DIALOG_DELETE = "DeleteDialog";
     private static final String BRAND_ID = "brand_id";
     private static final int CONFIRM_DELETE = 0;
+    //private static final int CLOTHES_CHANGED = 101;
 
 	private RecyclerView mClothesRecyclerView;
 	private ClothesAdapter mAdapter;
@@ -230,7 +231,8 @@ public class ClothesListFragment extends Fragment {
             int count = brand.getmBrandCount();
             brand.setmBrandCount(count-1);
             BigDecimal cost = new BigDecimal(clothes.getmCost());
-            BigDecimal worth = cost.subtract(cost);
+            BigDecimal value = new BigDecimal(brand.getmBrandWorth());
+            BigDecimal worth = value.subtract(cost);
             brand.setmBrandWorth(worth.toString());
             BrandLab.get(getActivity()).updateBrand(brand);
             ClothesLab.get(getActivity()).deleteClothes(checkedClothes);

@@ -58,9 +58,7 @@ public class ClothesPagerActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-
                     return mClothes.size();
-
             }
         });
 

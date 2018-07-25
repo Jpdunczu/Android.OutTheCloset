@@ -68,7 +68,6 @@ public class BrandListFragment extends Fragment {
         //BrandLab brandLab = BrandLab.get(getActivity());
         brands = lab.getmBrands();
 
-
         if (mAdapter == null) {
             mAdapter = new BrandAdapter(brands);
             mBrandRecyclerView.setAdapter(mAdapter);

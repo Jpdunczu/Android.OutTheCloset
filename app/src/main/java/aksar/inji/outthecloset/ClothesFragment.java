@@ -33,6 +33,7 @@ import java.util.UUID;
 public class ClothesFragment extends Fragment {
 
     private static final String ARG_CLOTHES_ID = "clothes_id";
+    private static final String ARG_CLOTHES_POS = "clothes_pos";
     private static final String FULL_SIZE_IMAGE = "FullSizeImage";
     private static final int REQUEST_PHOTO = 2;
 
@@ -55,7 +56,7 @@ public class ClothesFragment extends Fragment {
     public static ClothesFragment newInstance(UUID clothesId, int pos) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CLOTHES_ID, clothesId);
-
+        args.putSerializable(ARG_CLOTHES_POS, pos);
         ClothesFragment fragment = new ClothesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,6 +68,7 @@ public class ClothesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
+        int position = (int) getArguments().getSerializable(ARG_CLOTHES_POS);
         mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
         mPhotoFile = ClothesLab.get(getActivity()).getPhotoFile(mClothes);
     }
@@ -141,18 +143,16 @@ public class ClothesFragment extends Fragment {
                 mClothes.setmName(mClothingTitle.getText().toString());
                 mClothes.setmSize(mClothingSize.getText().toString());
                 String mCost = mClothingCost.getText().toString();
-                if (!mCost.equals("")) {
+                if (!mCost.equals("") && !mCost.equals(mClothes.getmCost())) {
                     BigDecimal cost = new BigDecimal(mCost);
+                    BigDecimal clothesCost = new BigDecimal(mClothes.getmCost());
+                    BigDecimal difference = cost.subtract(clothesCost);
                     BigDecimal worth = new BigDecimal(brand.getmBrandWorth());
-                    BigDecimal result = cost.add(worth);
+                    BigDecimal result = worth.add(difference);
                     mClothes.setmCostDec(cost.doubleValue());
                     mClothes.setmCost(cost.toString());
                     brand.setmBrandWorth(result.toString());
-                } else {
-                    mClothes.setmCostDec(0.00);
-                    mClothes.setmCost("0.00");
                 }
-
                 mClothes.setmColor(mClothingColor.getText().toString());
                 mClothes.setmNotes(mClothingNotes.getText().toString());
 

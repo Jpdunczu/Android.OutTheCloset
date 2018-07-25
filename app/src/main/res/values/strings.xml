@@ -6,7 +6,7 @@
 
     <string name="clothing_color_hint">Style</string>
     <string name="brand_name_label">Brand:</string>
-    <string name="brand_name_hint">What is the items Brand?</string>
+    <string name="brand_name_hint">Brand name</string>
     <string name="notes_label">Notes:</string>
     <string name="add_notes_hint">Add notes or a description of the item.</string>
     <string name="clothes_title">Clothes Name</string>
