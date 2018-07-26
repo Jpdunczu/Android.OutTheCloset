@@ -22,4 +22,6 @@ public class ClothesActivity extends SingleFragmentActivity {
         intent.putExtra(EXTRA_BRAND_ID, brandId);
         return intent;
     }
+
+
 }

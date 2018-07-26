@@ -1,5 +1,6 @@
 package aksar.inji.outthecloset;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +55,18 @@ public class ClothesFragment extends Fragment {
     private ImageView mPhotoView;
     private File mPhotoFile;
 
+    private int mPosition;
+
+    private Callbacks mCallback;
+
+    /**
+     *
+     * Required interface for hosting Activities
+     */
+    public interface Callbacks {
+        void onClothesUpdated(Clothes clothes, int position);
+    }
+
     public static ClothesFragment newInstance(UUID clothesId, int pos) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CLOTHES_ID, clothesId);
@@ -62,13 +76,18 @@ public class ClothesFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallback = (Callbacks) context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         UUID clothesId = (UUID) getArguments().getSerializable(ARG_CLOTHES_ID);
-        int position = (int) getArguments().getSerializable(ARG_CLOTHES_POS);
+        mPosition = (int) getArguments().getSerializable(ARG_CLOTHES_POS);
         mClothes = ClothesLab.get(getActivity()).getClothe(clothesId);
         mPhotoFile = ClothesLab.get(getActivity()).getPhotoFile(mClothes);
     }
@@ -77,6 +96,12 @@ public class ClothesFragment extends Fragment {
     public void onPause() {
         super.onPause();
         //ClothesLab.get(getActivity()).updateClothes(mClothes);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Nullable
@@ -158,6 +183,7 @@ public class ClothesFragment extends Fragment {
 
                 BrandLab.get(getActivity()).updateBrand(brand);
                 ClothesLab.get(getActivity()).updateClothes(mClothes);
+                mCallback.onClothesUpdated(mClothes, mPosition);
                 getActivity().finish();
             }
         });

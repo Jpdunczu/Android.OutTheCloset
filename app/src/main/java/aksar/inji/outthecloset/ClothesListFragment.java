@@ -1,6 +1,8 @@
 package aksar.inji.outthecloset;
 
 import android.app.Activity;
+import android.content.ComponentCallbacks;
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -31,13 +33,15 @@ public class ClothesListFragment extends Fragment {
     private static final String DIALOG_DELETE = "DeleteDialog";
     private static final String BRAND_ID = "brand_id";
     private static final int CONFIRM_DELETE = 0;
-    //private static final int CLOTHES_CHANGED = 101;
 
 	private RecyclerView mClothesRecyclerView;
 	private ClothesAdapter mAdapter;
 
 	private UUID checkedClothes;
 	private UUID mBrandId;
+
+	private int mPosition;
+	private Callbacks mCallbacks;
 
 	public static ClothesListFragment newInstance(UUID brandId) {
 	    Bundle args = new Bundle();
@@ -46,6 +50,20 @@ public class ClothesListFragment extends Fragment {
 	    ClothesListFragment fragment = new ClothesListFragment();
 	    fragment.setArguments(args);
 	    return fragment;
+    }
+
+    /**
+     *
+     * Required Interface for hosting Activities
+     */
+    public interface Callbacks {
+        void onClothesSelected(Clothes clothes);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
     }
 
 	@Override
@@ -66,6 +84,12 @@ public class ClothesListFragment extends Fragment {
 	
 		return view;
 	}
+
+	@Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
 
 	/***********************************************************************************/
 
@@ -116,9 +140,9 @@ public class ClothesListFragment extends Fragment {
                 mCheckBox.setVisibility(View.GONE);
                 return;
             }
-            Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId(), mBrandId);
-
-            startActivity(intent);
+            //Intent intent = ClothesPagerActivity.newIntent(getActivity(), mClothes.getmId(), mBrandId);
+            //startActivity(intent);
+            mCallbacks.onClothesSelected(mClothes);
         }
 
         @Override
@@ -179,7 +203,21 @@ public class ClothesListFragment extends Fragment {
         } else {
             mAdapter.setmClothes(clothes);
             mAdapter.notifyDataSetChanged();
-            //mAdapter.notifyItemChanged();
+            //mAdapter.notifyItemChanged(mPosition);
+        }
+    }
+
+    public void updateSingleUI(int position) {
+        ClothesLab clothesLab = ClothesLab.get(getActivity());
+        List<Clothes> clothes = clothesLab.getClothesByBrand(mBrandId);
+
+        if(mAdapter == null) {
+            mAdapter = new ClothesAdapter(clothes);
+            mClothesRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setmClothes(clothes);
+            //mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(position);
         }
     }
 
@@ -220,6 +258,7 @@ public class ClothesListFragment extends Fragment {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
@@ -239,5 +278,6 @@ public class ClothesListFragment extends Fragment {
             //mCheckBox.setVisibility(View.GONE);
             updateUI();
         }
+
     }
 }

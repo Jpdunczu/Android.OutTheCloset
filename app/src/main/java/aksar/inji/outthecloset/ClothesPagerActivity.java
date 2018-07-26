@@ -12,13 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.List;
 import java.util.UUID;
 
-public class ClothesPagerActivity extends AppCompatActivity {
+public class ClothesPagerActivity extends AppCompatActivity
+implements ClothesFragment.Callbacks {
 
     private static final String EXTRA_CLOTHES_ID =
             "com.aksar.inji.outthecloset.clothes_id";
 
     private static final String EXTRA_BRAND_ID =
             "com.aksar.inji.outthecloset.brand_id";
+
+    private static final int REQUEST_POSITION = 0;
 
     private ViewPager mViewPager;
     private List<Clothes> mClothes;
@@ -37,9 +40,10 @@ public class ClothesPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_clothes_pager);
         mViewPager = (ViewPager) findViewById(R.id.clothes_view_pager);
 
-            UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
+            final UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
             UUID brandId = (UUID) getIntent().getSerializableExtra(EXTRA_BRAND_ID);
             mClothes = ClothesLab.get(this).getClothesByBrand(brandId);
+
             for (int i = 0; i < mClothes.size(); i++) {
                 if (mClothes.get(i).getmId().equals(clothesId)) {
                     mViewPager.setCurrentItem(i);
@@ -61,7 +65,10 @@ public class ClothesPagerActivity extends AppCompatActivity {
                     return mClothes.size();
             }
         });
+    }
 
+    @Override
+    public void onClothesUpdated(Clothes clothes, int position) {
 
     }
 }
