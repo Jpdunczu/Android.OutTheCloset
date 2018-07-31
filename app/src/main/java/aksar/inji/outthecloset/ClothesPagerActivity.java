@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,23 +34,15 @@ implements ClothesFragment.Callbacks {
         return intent;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes_pager);
         mViewPager = (ViewPager) findViewById(R.id.clothes_view_pager);
 
-            final UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
+            UUID clothesId = (UUID) getIntent().getSerializableExtra(EXTRA_CLOTHES_ID);
             UUID brandId = (UUID) getIntent().getSerializableExtra(EXTRA_BRAND_ID);
             mClothes = ClothesLab.get(this).getClothesByBrand(brandId);
-
-            for (int i = 0; i < mClothes.size(); i++) {
-                if (mClothes.get(i).getmId().equals(clothesId)) {
-                    mViewPager.setCurrentItem(i);
-                    break;
-                }
-            }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -65,6 +58,14 @@ implements ClothesFragment.Callbacks {
                     return mClothes.size();
             }
         });
+
+        for (int i = 0; i < mClothes.size(); i++) {
+            if (mClothes.get(i).getmId().equals(clothesId)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
+        }
+
     }
 
     @Override

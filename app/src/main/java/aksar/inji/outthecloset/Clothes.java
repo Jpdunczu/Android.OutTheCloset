@@ -20,7 +20,7 @@ public class Clothes {
     private UUID mId;
     private UUID mBrandId;
     private String mName;
-    private String mDate;
+    //private String mDate;
     private String mCost;
     private Double mCostDec;
     private String mSize;
@@ -28,11 +28,11 @@ public class Clothes {
     private String mNotes;
     private Boolean mDIY;
     private String mBrandName;
-    private int position;
+    private String mIcon;
 
     public Clothes() {
         mId = UUID.randomUUID();
-        mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
+        //mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
         mBrandId = UUID.randomUUID();
         mName = "";
         mCost = "";
@@ -40,11 +40,12 @@ public class Clothes {
         mColor = "";
         mNotes = "";
         mDIY = false;
+        mIcon = "";
     }
 
     public Clothes(UUID brandId, String brandName) {
         mId = UUID.randomUUID();
-        mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
+        //mDate = LocalDateTime.now ( ).toString ().replace ( "T", " " );
         mBrandId = brandId;
         mBrandName = brandName;
         mName = "";
@@ -53,24 +54,26 @@ public class Clothes {
         mColor = "";
         mNotes = "";
         mDIY = false;
+        mIcon = "";
+    }
+
+    public String getmIcon() {
+        return mIcon;
+    }
+
+    public void setmIcon(String mIcon) {
+        this.mIcon = mIcon;
     }
 
     public Clothes(UUID id) {
         mId = id;
     }
 
+    /*
     public void setmDate(String date) {
         this.mDate = date;
     }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
+    */
     public UUID getmId() {
         return mId;
     }
@@ -89,9 +92,11 @@ public class Clothes {
         this.mName = mName;
     }
 
+    /*
     public String getmDate() {
         return mDate;
     }
+    */
 
     public String getmCost() {
         return mCost;

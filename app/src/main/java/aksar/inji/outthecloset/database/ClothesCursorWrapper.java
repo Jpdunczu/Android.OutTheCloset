@@ -29,7 +29,8 @@ public class ClothesCursorWrapper extends CursorWrapper {
         String cost = getString(getColumnIndex(ClothesTable.Cols.COST));
         String color = getString(getColumnIndex(ClothesTable.Cols.COLOR));
         String size = getString(getColumnIndex(ClothesTable.Cols.SIZE));
-        String date = getString(getColumnIndex(ClothesTable.Cols.DATE));
+        //String date = getString(getColumnIndex(ClothesTable.Cols.DATE));
+        String icon = getString(getColumnIndex(ClothesTable.Cols.ICON));
         String notes = getString(getColumnIndex(ClothesTable.Cols.NOTES));
         String diy = getString(getColumnIndex(ClothesTable.Cols.DIY));
 
@@ -39,9 +40,10 @@ public class ClothesCursorWrapper extends CursorWrapper {
         clothes.setmCost(cost);
         clothes.setmSize(size);
         clothes.setmColor(color);
-        clothes.setmDate(date);
+        //clothes.setmDate(date);
         clothes.setmNotes(notes);
         clothes.setmDIY(diy);
+        clothes.setmIcon(icon);
 
         return clothes;
     }

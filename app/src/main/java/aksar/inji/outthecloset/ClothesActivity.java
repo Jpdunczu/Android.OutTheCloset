@@ -23,5 +23,9 @@ public class ClothesActivity extends SingleFragmentActivity {
         return intent;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+    }
 }

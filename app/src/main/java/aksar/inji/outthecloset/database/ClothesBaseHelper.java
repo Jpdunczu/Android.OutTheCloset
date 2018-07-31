@@ -20,7 +20,8 @@ public class ClothesBaseHelper extends SQLiteOpenHelper {
             ClothesTable.Cols.COST + ", " +
             ClothesTable.Cols.COLOR + ", " +
             ClothesTable.Cols.SIZE + ", " +
-            ClothesTable.Cols.DATE + ", " +
+            //ClothesTable.Cols.DATE + ", " +
+            ClothesTable.Cols.ICON + ", " +
             ClothesTable.Cols.NOTES + ", " +
             ClothesTable.Cols.DIY +
             ")";

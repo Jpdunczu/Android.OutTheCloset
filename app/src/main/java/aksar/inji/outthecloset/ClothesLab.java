@@ -143,7 +143,8 @@ public class ClothesLab {
 	    values.put(ClothesTable.Cols.SIZE, clothes.getmSize());
 	    values.put(ClothesTable.Cols.NOTES, clothes.getmNotes());
 	    values.put(ClothesTable.Cols.DIY, "false");
-	    values.put(ClothesTable.Cols.DATE, clothes.getmDate());
+	    values.put(ClothesTable.Cols.ICON, clothes.getmIcon());
+	    //values.put(ClothesTable.Cols.DATE, clothes.getmDate());
 
 	    return values;
     }

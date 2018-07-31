@@ -5,6 +5,8 @@ import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +14,7 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +37,7 @@ public class ClothesListFragment extends Fragment {
     private static final String DIALOG_DELETE = "DeleteDialog";
     private static final String BRAND_ID = "brand_id";
     private static final int CONFIRM_DELETE = 0;
+    private static final int NEW_CLOTHES = 1;
 
 	private RecyclerView mClothesRecyclerView;
 	private ClothesAdapter mAdapter;
@@ -81,7 +86,7 @@ public class ClothesListFragment extends Fragment {
 		mClothesRecyclerView = (RecyclerView) view
 			.findViewById(R.id.clothes_recycler_view);
 		mClothesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-	
+	    updateUI();
 		return view;
 	}
 
@@ -95,13 +100,15 @@ public class ClothesListFragment extends Fragment {
 
 	// Implementing a View Holder and an Adapter
 
-    private class ClothesHolder extends ViewHolder
+    private class ClothesHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView mTitleTextView;
-        private TextView mDateTextView;
+        //private TextView mDateTextView;
         private TextView mCostTextView;
         private CheckBox mCheckBox;
+        private ImageView mIcon;
+        private SymbolTable mSymbolTable;
 
         /****************************/
         // for BindClothes
@@ -113,9 +120,10 @@ public class ClothesListFragment extends Fragment {
             itemView.setOnLongClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.clothes_name);
-            mDateTextView = (TextView) itemView.findViewById(R.id.date_added);
+            //mDateTextView = (TextView) itemView.findViewById(R.id.date_added);
             mCostTextView = (TextView) itemView.findViewById(R.id.clothes_price);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.select_item);
+            mIcon = (ImageView) itemView.findViewById(R.id.imageView);
 
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -128,8 +136,13 @@ public class ClothesListFragment extends Fragment {
         public void bind(Clothes clothing) {
             mClothes = clothing;
             mTitleTextView.setText(mClothes.getmName());
-            mDateTextView.setText(mClothes.getmDate().toString());
+            //mDateTextView.setText(mClothes.getmDate().toString());
             mCostTextView.setText("$" + mClothes.getmCost());
+            if (!mClothes.getmIcon().equals("")) {
+
+            } else {
+                mIcon.setImageResource(R.mipmap.ic_launcher);
+            }
         }
 
         @Override
@@ -168,9 +181,6 @@ public class ClothesListFragment extends Fragment {
             return new ClothesHolder(layoutInflater, parent);
         }
 
-        // added position variable for future challenge to re-load only the one item which was edited, not the whole list in UpdateUi();
-        // mAdapter.notifyItemChanged(position);
-        //
         @Override
         public void onBindViewHolder(ClothesHolder holder, int position) {
             Clothes clothing = mClothesList.get(position);
@@ -190,7 +200,7 @@ public class ClothesListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
+        //updateUI();
     }
 
     private void updateUI() {
@@ -236,7 +246,7 @@ public class ClothesListFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.new_clothes:
                 Intent intent = ClothesActivity.newIntent(getActivity(), mBrandId);
-                startActivity(intent);
+                startActivityForResult(intent, NEW_CLOTHES);
                 return true;
             case R.id.delete_old_clothes:
                 if ( checkedClothes == null ) {
@@ -247,6 +257,7 @@ public class ClothesListFragment extends Fragment {
                     confirm.setTargetFragment(ClothesListFragment.this, CONFIRM_DELETE);
                     confirm.show(fragmentManager, DIALOG_DELETE);
                 }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -276,6 +287,8 @@ public class ClothesListFragment extends Fragment {
             BrandLab.get(getActivity()).updateBrand(brand);
             ClothesLab.get(getActivity()).deleteClothes(checkedClothes);
             //mCheckBox.setVisibility(View.GONE);
+            updateUI();
+        } else if (requestCode == NEW_CLOTHES) {
             updateUI();
         }
 
